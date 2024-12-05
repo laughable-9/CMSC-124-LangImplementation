@@ -1,20 +1,77 @@
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Initialize the scanner
-        LogicScanner scanner = new LogicScanner();
 
-        // Example input sentence in propositional logic
-        String input = "(P AND Q)";
+        Scanner scanner = new Scanner(System.in);
+        String userInput;
 
-        // Tokenize the input using the scanner
-        List<Token> tokens = scanner.tokenize(input);
+        // Continuously prompt the user for input
+        while (true) {
+            System.out.print("Enter command: ");
 
-        // Display the tokens
-        System.out.println("Scanned Tokens:");
-        for (Token token : tokens) {
-            token.displayToken(); // show the tokens
+            // Read the user's input
+            userInput = scanner.nextLine();
+
+            // Check if the user input starts with "LOGIC"
+            if (userInput.startsWith("LOGIC ")) {
+                // Extract the filename part by removing "LOGIC "
+                String fileName = userInput.substring(6).trim();
+
+                // Check if the filename ends with ".pl"
+                if (fileName.endsWith(".pl")) {
+                    try {
+                        // Read the file content
+                        String fileContent = readFile(fileName);
+
+                        // Tokenize the content using LogicScanner
+                        LogicScanner logicScanner = new LogicScanner();
+                        List<Token> tokens = logicScanner.tokenize(fileContent);
+
+                        // Display the tokens (FOR DEBUGGING)
+                        System.out.println("\nTokens:");
+                        for (Token token : tokens) {
+                            token.displayToken();
+                        }
+                        break; // Exit the loop after successfully processing the file
+
+                    } catch (IOException e) {
+                        // Handle file reading errors
+                        System.out.println("Error: Could not read the file. Please check the filename and try again.");
+                    }
+                } else {
+                    System.out.println("Error: The file must have a .pl extension.");
+                }
+            } else {
+                // Ignore any input that doesn't start with "LOGIC "
+                System.out.println("Invalid command. Please type 'LOGIC filename.pl' to process a file.");
+            }
         }
+    }
+
+    // HELPER FUNCTION
+
+    // Reads the content of a file and returns it as a string
+    // INPUT: Name of the file (String)
+    // OUTPUT: Content of the file (String)
+    private static String readFile(String fileName) throws IOException {
+        // Initialize a StringBuilder to efficiently store the file content
+        StringBuilder content = new StringBuilder();
+
+        // Use a BufferedReader to read the file line by line
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        String line;
+
+        // Loop through each line in the file until no lines are left
+        while ((line = reader.readLine()) != null) {
+            // Append the current line to the content and add a newline character
+            content.append(line).append("\n");
+        }
+
+        reader.close();
+
+        // Convert the StringBuilder to a String and remove trailing spaces or newlines
+        return content.toString().trim();
     }
 }
