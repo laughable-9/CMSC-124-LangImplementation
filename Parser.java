@@ -43,19 +43,19 @@ public class Parser {
         		&& token.getValue().equals("(")) {
             consumeToken(); // for ( token
             parseSentence(); // this will parse inner sentence
-            if (tokenIndexValue >= forTokens.size() || !currentToken().getValue().equals(")")) {
+            if (tokenIndexValue >= forTokens.size() || !currentToken().getValue().equals(")")) { // [arse parenthesis
                 throw new SyntaxError("Expected ')' but found: " +
                         (tokenIndexValue < forTokens.size() ? currentToken().getValue() : "end of input"));
             }
             consumeToken(); // for ) token
-        } else if (token.getType() 
+        } else if (token.getType() // check if iden or literal
         		== TokenType.IDENTIFIER 
         		|| token.getType() 
         		== TokenType.LITERAL) {
         	
             parseAtomic(); // this will parse the atomic
             
-        } else if (token.getType() == TokenType.KEYWORD && token.getValue().equals("NOT")) {
+        } else if (token.getType() == TokenType.KEYWORD && token.getValue().equals("NOT")) { // not keyword 
             consumeToken(); // for not
             
             parseSentence(); // parse negation
@@ -69,7 +69,7 @@ public class Parser {
     // parse true false p q s
     private void parseAtomic() {
         Token token = currentToken();
-        if (token.getType()
+        if (token.getType() // iden or literal
         		== TokenType.IDENTIFIER 
         		|| token.getType() 
         		== TokenType.LITERAL) {
