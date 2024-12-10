@@ -111,7 +111,7 @@ public class LogicScanner {
     // Helper methods for token classification
     // Goes through all keywords in the KEYWORDS array
     // And compares it with a given input word
-    private boolean isKeyword(String word) {
+    public boolean isKeyword(String word) {
         for (String keyword : KEYWORDS) {
             if (word.equals(keyword)) {
                 return true;
@@ -122,7 +122,7 @@ public class LogicScanner {
 
       // Goes through all keywords in the IDENTIFIERS array
     // And compares it with a given input word
-    private boolean isIdentifier(String word) {
+    public boolean isIdentifier(String word) {
         for (String identifier : IDENTIFIERS) {
             if (word.equals(identifier)) {
                 return true;
@@ -133,7 +133,7 @@ public class LogicScanner {
 
       // Goes through all keywords in the LITERALS array
     // And compares it with a given input word
-    private boolean isLiteral(String word) {
+    public boolean isLiteral(String word) {
         for (String literal : LITERALS) {
             if (word.equals(literal)) {
                 return true;
@@ -144,7 +144,7 @@ public class LogicScanner {
 
     // Goes through all keywords in the SYMBOLS array
     // And compares it with a given input word
-    private boolean isSymbol(String word) {
+    public boolean isSymbol(String word) {
         if (word.length() == 1) {
             char c = word.charAt(0);
             for (char symbol : SYMBOLS) {
