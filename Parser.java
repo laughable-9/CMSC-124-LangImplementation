@@ -1,9 +1,11 @@
+package Scanner;
+
 import java.util.*;
 
 public class Parser {
 
-    private List<Token> forTokens; // this is the list of input
-    private int tokenIndexValue;     // this is the pointer of 
+    private List<Token> forTokens; // this is the list of inputted tokens that we got from the scanner
+    private int tokenIndexValue;     // this is the pointer of the current token
 
     public Parser(List<Token> forTokens) {
         this.forTokens = forTokens;
@@ -12,18 +14,18 @@ public class Parser {
 
     // this validates the grammar of tokens
     public void parsePlease() { 
-        parseSentence(); // this will start on parsing the sent
+        parseSentence(); // this will start on parsing the sentence
         if (tokenIndexValue < forTokens.size()) {
-            throw new SyntaxError("\n Unexpected token: " + cur
+            throw new SyntaxError("\n Unexpected token: " + currentToken().getValue());
         }
     }
 
     
     private void parseSentence() {
-        parseAtomicOrComplex(); // this will going to parse the
+        parseAtomicOrComplex(); // this will going to parse the atomic or complex sentence
 
         // for handling the operators (or, and, etc.)
-        while (tokenIndexValue < forTokens.size() && currentTok
+        while (tokenIndexValue < forTokens.size() && currentToken().getType() == TokenType.KEYWORD) {
             consumeToken(); // Consume the operator
             parseAtomicOrComplex(); // parse rhs
         }
@@ -32,7 +34,7 @@ public class Parser {
     // parse the atomic or comp
     private void parseAtomicOrComplex() {
         if (tokenIndexValue >= forTokens.size()) {
-            throw new SyntaxError("\n Unexpected end of input. 
+            throw new SyntaxError("\n Unexpected end of input. Please try again.");
         }
 
         Token token = currentToken();
@@ -42,9 +44,9 @@ public class Parser {
         		&& token.getValue().equals("(")) {
             consumeToken(); // for ( token
             parseSentence(); // this will parse inner sentence
-            if (tokenIndexValue >= forTokens.size() || !current
-                throw new SyntaxError("Expected ')' but found: 
-                        (tokenIndexValue < forTokens.size() ? c
+            if (tokenIndexValue >= forTokens.size() || !currentToken().getValue().equals(")")) {
+                throw new SyntaxError("Expected ')' but found: " +
+                        (tokenIndexValue < forTokens.size() ? currentToken().getValue() : "end of input"));
             }
             consumeToken(); // for ) token
         } else if (token.getType() 
@@ -54,14 +56,14 @@ public class Parser {
         	
             parseAtomic(); // this will parse the atomic
             
-        } else if (token.getType() == TokenType.KEYWORD && toke
+        } else if (token.getType() == TokenType.KEYWORD && token.getValue().equals("NOT")) {
             consumeToken(); // for not
             
             parseSentence(); // parse negation
             
             
         } else { // displaying error message
-            throw new SyntaxError("\n Unexpected token: " + tok
+            throw new SyntaxError("\n Unexpected token: " + token.getValue());
         }
     }
 
@@ -76,7 +78,7 @@ public class Parser {
             
             
         } else { // display error message
-            throw new SyntaxError("Expected an atomic sentence 
+            throw new SyntaxError("Expected an atomic sentence but found: " + token.getValue());
         }
     }
 
@@ -85,7 +87,7 @@ public class Parser {
         if (tokenIndexValue < forTokens.size()) {
             return forTokens.get(tokenIndexValue);
         } else {
-            throw new NoSuchElementException("Oops. No more Tok
+            throw new NoSuchElementException("Oops. No more Tokens available :{");
         }
     }
 
@@ -95,7 +97,7 @@ public class Parser {
         if (tokenIndexValue < forTokens.size()) {
             tokenIndexValue++;
         } else {
-            throw new NoSuchElementException("Oops. No more Tok
+            throw new NoSuchElementException("Oops. No more Tokens to consume :{");
         }
     }
 }
