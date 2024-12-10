@@ -1,3 +1,5 @@
+package Scanner;
+
 import java.io.*;
 import java.util.*;
 
@@ -34,6 +36,16 @@ public class Main {
                         for (Token token : tokens) {
                             token.displayToken();
                         }
+                        // this is for validating the parser
+                        try {
+                            Parser parser = new Parser(tokens); // Pass tokens to the parser
+                         parser.parsePlease();
+                         System.out.println("\n Hi! Parsing has done successfully :) ");
+                        } catch (SyntaxError message) {
+                        	System.out.println("\n Oops. Your input seems have an error." + message.getMessage());
+                        }
+                        
+                        
                         break; // Exit the loop after successfully processing the file
 
                     } catch (IOException e) {
