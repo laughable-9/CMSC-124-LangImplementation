@@ -24,7 +24,6 @@ public class ErrorHandling {
                 logScan.isSymbol(word) == false) {
 
                 count = 0;
-                
                 System.out.println("Error: The token '" + word + "' is not recognized on string '" + input + "'");
                 
                 return false;
@@ -81,10 +80,10 @@ public class ErrorHandling {
 
                     if (logScan.isKeyword(nextWord) == true && 
                         nextWord.compareTo("NOT") != 0) {
-                            
+
                         count = 0;
-                        
                         errorMessage(input);
+
                         return false;
                     }
                 }
@@ -96,7 +95,6 @@ public class ErrorHandling {
                 //Checks if ")" is detected before open parenthesis
                 if (count < 0) {
                     count = 0;
-                    
                     System.out.println("Error: Close parenthesis detected before open parenthesis on string '" + input + "'");
 
                     return true;
@@ -108,8 +106,8 @@ public class ErrorHandling {
 
                     if (logScan.isKeyword(nextWord) == true) {
                         count = 0;
-                        
                         errorMessage(input);
+
                         return false;
                     }
                 };
@@ -120,7 +118,6 @@ public class ErrorHandling {
         //Checks if grouping was done properly
         if (count != 0) {
             count = 0;
-
             System.out.println("Error: Incomplete grouping, please add a close parenthesis at the end of the string '" + input + "'");
 
             return false;
@@ -162,9 +159,8 @@ public class ErrorHandling {
 
     //Error message for incorrect format of logic
     private void errorMessage(String input) {
-        
         System.out.println("Error: The string '" + input + "' does not make sense, please try again");
-
+        
     };
 
 };
