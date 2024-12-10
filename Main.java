@@ -39,8 +39,8 @@ public class Main {
                         // this is for validating the parser
                         try {
                             Parser parser = new Parser(tokens); // Pass tokens to the parser
-                         parser.parsePlease();
-                         System.out.println("\n Hi! Parsing has done successfully :) ");
+                            parser.parsePlease();
+                            System.out.println("\n Hi! Parsing has done successfully :) ");
                         } catch (SyntaxError message) {
                         	System.out.println("\n Oops. Your input seems have an error." + message.getMessage());
                         }
@@ -77,6 +77,12 @@ public class Main {
 
         // Loop through each line in the file until no lines are left
         while ((line = reader.readLine()) != null) {
+            //Ends program if error occurs
+            ErrorHandling errorHandle = new ErrorHandling();
+            if (errorHandle.errorCheck(line) == false) {
+                System.exit(0);
+            }
+
             // Append the current line to the content and add a newline character
             content.append(line).append("\n");
         }
