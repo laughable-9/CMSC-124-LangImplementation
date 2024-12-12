@@ -81,4 +81,25 @@ public class Evaluator {
     public boolean evaluate(Sentence sentence) {
         return sentence.eval(this);
     }
+
+    public void evaluateTable(Sentence sentence, String[] variables) {
+        int varNum = variables.length;
+        int combNum = (int) Math.pow(2,varNum);
+    
+        for(int i=0; i<combNum; i++) {
+            for(int j=0; j<varNum; j++) {
+                boolean value = ((i >> (varNum - 1 - j)) & 1) == 0;
+                setvarVal(variables[j],value);
+            }
+    
+            boolean result = evaluate(sentence);
+    
+            String row = "";
+            for(String variable:variables) {
+                row += getvarVal(variable) + "\t|\t";
+            }
+            row += result;
+            System.out.println(row);
+        }
+    }
 }
