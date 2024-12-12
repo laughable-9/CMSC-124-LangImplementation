@@ -41,6 +41,11 @@ public class Main {
                             Parser parser = new Parser(tokens); // Pass tokens to the parser
                             parser.parsePlease();
                             System.out.println("\n Hi! Parsing has done successfully :) ");
+
+                            String statement = fileContent.trim();
+                            Evaluator evaluator = new Evaluator();
+                            evaluator.generated(parsedSentence,variables);
+
                         } catch (SyntaxError message) {
                         	System.out.println("\n Oops. Your input seems have an error." + message.getMessage());
                         }
