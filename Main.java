@@ -49,6 +49,12 @@ public class Main {
                                 }
                             }
                             String variables = varSet.toArray(new String[0]);
+                            System.out.println("Truth Table of "+file.Content.trim());
+                            for(String variable:variables) {
+                               System.out.print(variable + "\t|\t"); 
+                            }
+                            System.out.print("\t| "+file.Content.trim());
+
                             Evaluator evaluator = new Evaluator();
                             evaluator.evaluateTable(parsedSentence,variables);
 
