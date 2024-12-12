@@ -39,12 +39,18 @@ public class Main {
                         // this is for validating the parser
                         try {
                             Parser parser = new Parser(tokens); // Pass tokens to the parser
-                            parser.parsePlease();
+                            Sentence parsedSentence = parser.parsePlease();
                             System.out.println("\n Hi! Parsing has done successfully :) ");
-
-                            String statement = fileContent.trim();
+                            
+                            Set<string> varSet = new HashSet<>();
+                            for(Token token:tokens) {
+                                if(token.getType()==TokenType.IDENTIFIER) {
+                                    varSet.add(token.getValue());
+                                }
+                            }
+                            String variables = varSet.toArray(new String[0]);
                             Evaluator evaluator = new Evaluator();
-                            evaluator.generated(parsedSentence,variables);
+                            evaluator.evaluateTable(parsedSentence,variables);
 
                         } catch (SyntaxError message) {
                         	System.out.println("\n Oops. Your input seems have an error." + message.getMessage());
