@@ -1,5 +1,3 @@
-package Scanner;
-
 import java.io.*;
 import java.util.*;
 
@@ -40,20 +38,19 @@ public class Main {
                         try {
                             Parser parser = new Parser(tokens); // Pass tokens to the parser
                             Sentence parsedSentence = parser.parsePlease();
-                            System.out.println("\n Hi! Parsing has done successfully :) ");
                             
-                            Set<string> varSet = new HashSet<>();
+                            Set<String> varSet = new HashSet<>();
                             for(Token token:tokens) {
                                 if(token.getType()==TokenType.IDENTIFIER) {
                                     varSet.add(token.getValue());
                                 }
                             }
-                            String variables = varSet.toArray(new String[0]);
-                            System.out.println("Truth Table of "+file.Content.trim());
+                            String[] variables = varSet.toArray(new String[0]);
+                            System.out.println("Truth Table of "+ fileContent.trim());
                             for(String variable:variables) {
-                               System.out.print(variable + "\t|\t"); 
+                               System.out.print(variable+"\t|"); 
                             }
-                            System.out.print("\t| "+file.Content.trim());
+                            System.out.print(" "+ fileContent.trim()+"\n");
 
                             Evaluator evaluator = new Evaluator();
                             evaluator.evaluateTable(parsedSentence,variables);
