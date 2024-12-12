@@ -96,7 +96,7 @@ public class Evaluator {
     
             String row = "";
             for(String variable:variables) {
-                row += getvarVal(variable) + "\t|\t";
+                row +=getvarVal(variable)+"\t|";
             }
             row += result;
             System.out.println(row);
