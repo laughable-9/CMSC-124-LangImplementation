@@ -46,7 +46,7 @@ public class Main {
                                 }
                             }
                             String[] variables = varSet.toArray(new String[0]);
-                            System.out.println("Truth Table of "+ fileContent.trim());
+                            System.out.println("Truth Table of: "+ fileContent.trim());
                             for(String variable:variables) {
                                System.out.print(variable+"\t|"); 
                             }
