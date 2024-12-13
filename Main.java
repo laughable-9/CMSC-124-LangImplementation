@@ -48,9 +48,9 @@ public class Main {
                             String[] variables = varSet.toArray(new String[0]);
                             System.out.println("\nTruth Table of: "+ fileContent.trim());
                             for(String variable:variables) {
-                               System.out.print("\t|"+variable+"\t|"); 
+                               System.out.print("\t|\t"+variable); 
                             }
-                            System.out.print("\t| "+ fileContent.trim()+"\n");
+                            System.out.print("\t|"+ fileContent.trim()+"\n");
 
                             Evaluator evaluator = new Evaluator();
                             evaluator.evaluateTable(parsedSentence,variables);
