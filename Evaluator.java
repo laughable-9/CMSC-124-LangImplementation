@@ -113,7 +113,7 @@ public class Evaluator {
             for(String variable:variables) {
                 row +=(getvarVal(variable)?"True":"False")+"\t|";
             }
-            row += result;
+            row += (result?"True":"False");
             System.out.println(row);
         }
     }
