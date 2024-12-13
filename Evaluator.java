@@ -111,9 +111,9 @@ public class Evaluator {
     
             String row = "";
             for(String variable:variables) {
-                row +=(getvarVal(variable)?"True":"False")+"\t|";
+                row +="\t|"+(getvarVal(variable)?"True":"False")+"\t|";
             }
-            row += (result?"True":"False");
+            row += "\t|"+(result?"True":"False");
             System.out.println(row);
         }
     }
