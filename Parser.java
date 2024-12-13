@@ -28,9 +28,9 @@ public class Parser {
             String connective = currentToken().getValue(); // Gets the connective
             consumeToken(); // Consumes the connective
             Sentence right = parseAtomicOrComplex(); // Parses the right side of the sentence
-            Sentence csentence = new ComplexSentence(left,connective,right); // Constructs a new ComplexSentence with the left and right parts
+            left = new ComplexSentence(left,connective,right); // Constructs a new ComplexSentence with the left and right parts
         }
-        return csentence;
+        return left;
     }
 
     // Parses the Atomic/Complex sentence, then returns the corresponding Sentence object
