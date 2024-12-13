@@ -1,37 +1,40 @@
-
 import java.util.*;
 
 public class Parser {
 
-    private List<Token> forTokens; // this is the list of inputted tokens that we got from the scanner
-    private int tokenIndexValue;     // this is the pointer of the current token
+    private List<Token> forTokens; // List of inputted tokens obtained from the scanner
+    private int tokenIndexValue;     // Pointer of the current token
 
     public Parser(List<Token> forTokens) {
         this.forTokens = forTokens;
         this.tokenIndexValue = 0;
     }
 
-    // this validates the grammar of tokens
-    public void parsePlease() { 
-        parseSentence(); // this will start on parsing the sentence
+    // Validates the grammar of tokens
+    public Sentence parsePlease() { 
+        Sentence sentence = parseSentence(); // Starts parsing the sentence
         if (tokenIndexValue < forTokens.size()) {
             throw new SyntaxError("\n Unexpected token: " + currentToken().getValue());
         }
+        return sentence;
     }
 
     
-    private void parseSentence() {
-        parseAtomicOrComplex(); // this will going to parse the atomic or complex sentence
+    private Sentence parseSentence() {
+        Sentence left = parseAtomicOrComplex(); // Parses the left side of the sentence
 
-        // for handling the operators (or, and, etc.)
+        // Handles the connectives
         while (tokenIndexValue < forTokens.size() && currentToken().getType() == TokenType.KEYWORD) {
-            consumeToken(); // Consume the operator
-            parseAtomicOrComplex(); // parse rhs
+            String connective = currentToken().getValue(); // Gets the connective
+            consumeToken(); // Consumes the connective
+            Sentence right = parseAtomicOrComplex(); // Parses the right side of the sentence
+            csentence = new ComplexSentence(left,connective,right); // Constructs a new ComplexSentence with the left and right parts
         }
+        return csentence;
     }
 
-    // parse the atomic or comp
-    private void parseAtomicOrComplex() {
+    // Parses the Atomic/Complex sentence, then returns the corresponding Sentence object
+    private Sentence parseAtomicOrComplex() {
         if (tokenIndexValue >= forTokens.size()) {
             throw new SyntaxError("\n Unexpected end of input. Please try again.");
         }
@@ -41,47 +44,45 @@ public class Parser {
         if (token.getType()
         		== TokenType.SYMBOL 
         		&& token.getValue().equals("(")) {
-            consumeToken(); // for ( token
-            parseSentence(); // this will parse inner sentence
-            if (tokenIndexValue >= forTokens.size() || !currentToken().getValue().equals(")")) { // [arse parenthesis
+            consumeToken(); // For "(" token
+            Sentence innerSentence = parseSentence(); // Parses the inner sentence
+            if (tokenIndexValue >= forTokens.size() || !currentToken().getValue().equals(")")) { // Parse parenthesis
                 throw new SyntaxError("Expected ')' but found: " +
                         (tokenIndexValue < forTokens.size() ? currentToken().getValue() : "end of input"));
             }
-            consumeToken(); // for ) token
-        } else if (token.getType() // check if iden or literal
+            consumeToken(); // For ")" token
+            return innerSentence;
+        } else if (token.getType() // Check if Identifier/Literal
         		== TokenType.IDENTIFIER 
         		|| token.getType() 
         		== TokenType.LITERAL) {
-        	
-            parseAtomic(); // this will parse the atomic
-            
+        	return parseAtomic(); // Parses the Atomic sentence
         } else if (token.getType() == TokenType.KEYWORD && token.getValue().equals("NOT")) { // not keyword 
-            consumeToken(); // for not
-            
-            parseSentence(); // parse negation
-            
-            
-        } else { // displaying error message
+            consumeToken(); // For "not" token
+            Sentence notSentence = parseAtomicOrComplex();
+            return new Not(notSentence);          
+        } else { // Displays error message
             throw new SyntaxError("\n Unexpected token: " + token.getValue());
         }
     }
 
-    // parse true false p q s
-    private void parseAtomic() {
+    // Parses Atomic sentence
+    private Sentence parseAtomic() {
         Token token = currentToken();
-        if (token.getType() // iden or literal
-        		== TokenType.IDENTIFIER 
-        		|| token.getType() 
-        		== TokenType.LITERAL) {
-            consumeToken(); // for atomic
-            
-            
-        } else { // display error message
+        // Identifier
+        if (token.getType() == TokenType.IDENTIFIER) {
+            consumeToken(); // Consumes Atomic token
+            return new Variable(token.getValue());
+        // Literal
+        } else if (token.getType() == TokenType.LITERAL) {
+            consumeToken(); // Consumes Atomic token
+            return new Variable(token.getValue());
+        } else { // Displays error message
             throw new SyntaxError("Expected an atomic sentence but found: " + token.getValue());
         }
     }
 
-    // this will get current token
+    // Gets current token
     private Token currentToken() {
         if (tokenIndexValue < forTokens.size()) {
             return forTokens.get(tokenIndexValue);
@@ -90,8 +91,7 @@ public class Parser {
         }
     }
 
-    // next token
-    
+    // Next token
     private void consumeToken() {
         if (tokenIndexValue < forTokens.size()) {
             tokenIndexValue++;
